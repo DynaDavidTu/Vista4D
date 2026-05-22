@@ -14,8 +14,11 @@
 = Vista4D 安裝
 ===============================================================================
 
-  • 驗證環境 WSL2 Ubuntu22.04 + RTX 5060 Ti
-  • 作者建議使用 pytorch 2.10 及 CUDA 12.8 
+  • 驗證環境 
+    ◦ WSL2 Ubuntu22.04 + RTX 5060 Ti 
+    ◦ runpod 雲端環境 A100 PCie(VRAM 80GB) + 200GB storage volume
+
+  • 作者建議使用 python 3.10 / pytorch 2.10 / CUDA 12.8 
 
   • 下載安裝 Vista4D
     $ git clone https://github.com/Eyeline-Labs/Vista4D.git
@@ -29,7 +32,7 @@
     $ pip install -r requirements.txt
     ```
 
-  • 安裝 Flash Attention & flash-attn 套件 
+  • 安裝 Flash Attention & xfuser 套件 
     • 預設編譯會使用過多的 thread 導致 memory 要求過量而使 WSL shutdown
       ◦ 編譯蠻花時間的，可根據電腦性能調整 MAX_JOBS 數
     
@@ -47,12 +50,18 @@
     ◦ 降版 setuptools 來使用舊的 pkg_resources function 
     $ pip install "setuptools<70.0.0"
 
+  • return F.conv3d(
+    RuntimeError: cuDNN error: CUDNN_STATUS_NOT_INITIALIZED
+
+    ◦ 修改 scripts/inference/inference.py
+      • 開頭加上 "torch.backends.cudnn.enabled = False"
+
 ===============================================================================
 = Vista4D Pretrained Model
 ===============================================================================
-  • 運行 demo 流程會自動下載前處理相關模型
+  • 運行 demo 流程 1. 2.步驟 會自動下載前處理相關模型
   
-  • 驗證前準備
+  • 第3.步需要先登入 hugging face 並用 shell script 下載 pretrained
     ◦ 需要 hugging face 帳號設定 access tokens 方便後續下載模型
     ◦ 輸入以下指令並透過 access token 認證
     $ hf auth login
@@ -65,18 +74,23 @@
 = Vista4D 驗證 : 
 ===============================================================================
 
+  • 環境建議
+    ◦ 建議使用 A100 (80GB VRAM)來跑第3步，diffusion model 偏大
+    ◦ 雖然程式支援多GPU但，單GPU只少要有 50 GB 才夠放下完整 model
+    ◦ CUDA 12.8
+
   • 驗證前準備
     ◦ 需要 hugging face 帳號設定 access tokens 方便後續下載模型
     ◦ 輸入以下指令並透過 access token 認證
     $ hf auth login
 
   • Demo video 驗證 
-    ◦ Video 前處理
+    ◦ Video 前處理 (可在本地使用 WSL 完成)
       1. 4D reconstruction & dynamic mask segmentation
       $ EXAMPLE=couple-newspaper RECON_METHOD=pi3 bash scripts/preprocess/example_recon_and_seg_single.sh
 
       2. Point cloud rendering
       $ EXAMPLE=couple-newspaper RESOLUTION=384p bash scripts/preprocess/example_render_single.sh
     
-    ◦ Vista4D inference
+    ◦ Vista4D inference (雲端上使用 A100 完成)
       $ EXAMPLE=couple-newspaper RESOLUTION=384p bash scripts/inference/example_inference_single.sh

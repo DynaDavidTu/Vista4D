@@ -1,5 +1,6 @@
 EXAMPLE=${EXAMPLE:-couple-newspaper}  # We provide some examples to demo Vista4D!
 RECON_METHOD=${RECON_METHOD:-pi3}  # pi3, da3
+ARGS=""
 echo "Script kwargs:"
 echo "    EXAMPLE=$EXAMPLE"
 echo "    RECON_METHOD=$RECON_METHOD"
@@ -20,6 +21,9 @@ elif [ $EXAMPLE == snowboard ]; then
     SEG_KEYWORDS=("person" "helmet" "goggles" "snow suit" "snowboard")
 elif [ $EXAMPLE == soapbox ]; then
     SEG_KEYWORDS=("person" "helmet" "blue cart" "blue trolley" "wheel" "barrel")
+elif [ $EXAMPLE == room ]; then
+    SEG_KEYWORDS=("man")
+    ARGS="$ARGS --num_frames 8"
 else
     echo "Unrecognized EXAMPLE=$EXAMPLE, exiting script."
     exit 1
@@ -41,4 +45,5 @@ python3 -m scripts.preprocess.recon_and_seg_single \
     --pi3_model_id yyfz233/Pi3X \
     --height $HEIGHT --width $WIDTH --num_frames $NUM_FRAMES \
     --pi3_pixel_limit $PI3_PIXEL_LIMIT --da3_process_res $DA3_PROCESS_RES \
-    --save_vis
+    --save_vis \
+    $ARGS

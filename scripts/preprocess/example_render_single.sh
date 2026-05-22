@@ -6,6 +6,8 @@ echo "    EXAMPLE=$EXAMPLE"
 echo "    RESOLUTION=$RESOLUTION"
 echo "    RENDER_ONLY_NECESSARY=$RENDER_ONLY_NECESSARY"
 
+
+NUM_FRAMES=49
 # These provided cameras are designed by the authors based on the Pi3X 4D reconstruction. If you are using DA3 or Pi3,
 # these cameras may not be in their intended positions. Use --scene_scale when running recon_and_seg_single.py (to match
 # your 4D reconstruction to that of Pi3X's) or design your own cameras if you are not using Pi3X reconstruction!
@@ -25,6 +27,9 @@ elif [ $EXAMPLE == snowboard ]; then
     CAM_PATH=./media/single/snowboard_back-follow.npz
 elif [ $EXAMPLE == soapbox ]; then
     CAM_PATH=./media/single/soapbox_crane-above-right.npz
+elif [ $EXAMPLE == room ]; then
+    CAM_PATH=./results/single/room/recon_and_seg/cameras.npz
+    NUM_FRAMES=8
 else
     echo "Unrecognized EXAMPLE=$EXAMPLE, exiting script."
     exit 1
@@ -37,7 +42,6 @@ elif [ $RESOLUTION == 720p ]; then
     HEIGHT=720
     WIDTH=1280
 fi
-NUM_FRAMES=49
 
 ARGS=""
 if [ $RENDER_ONLY_NECESSARY == true ]; then

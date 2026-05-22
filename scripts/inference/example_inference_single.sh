@@ -52,6 +52,8 @@ elif [ $EXAMPLE == snowboard ]; then
     PROMPT="A man wearing a black helmet, snow jacket, and gloves and dark blue snow pants is snowboarding down a path of snow, where the snow looks compact and already has many marks on it from previous snowboarders and skiers. As he snowboards he leaps up with the snowboard and does a 360 jump, flinging clouds of snow around his snowboard. Behind him is a hill or mountain of snow with rocks on it, surrounding the snowboard and skiing path. The scene seems to take place closer to sunset or sunrise, with a long shadow behind the snowboarder."
 elif [ $EXAMPLE == soapbox ]; then
     PROMPT="A video of a man pushing a sky blue homemade cart with a man wearing a helmet and sitting on top of it and a red barrel at the front of the cart. The man runs with and pushes the cart on top of a wooden soapbox with ramps on either side. The scene takes place in the middle of a street with houses and spectators around, during a half-cloudly half-sunny day."
+elif [ $EXAMPLE == room ]; then
+    PROMPT="A video of a modern workspace is arranged with tiled floors and large windows that flood the room with natural light. At the center, a table holds cameras, a helmet, cables, a bottle, and a sign with Japanese text, suggesting preparation for a demonstration or collaborative project. The surrounding area features neatly placed chairs and tables, a rack filled with magazines, and a large monitor on a stand, reinforcing the professional atmosphere. Over time, the scene reflects an organized and purposeful environment, where technology and teamwork converge in a clean, contemporary setting."
 else
     echo "Unrecognized EXAMPLE=$EXAMPLE, exiting script."
     exit 1
