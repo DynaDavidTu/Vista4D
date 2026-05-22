@@ -240,3 +240,4 @@ __marimo__/
 .streamlit/secrets.toml
 .ssh
 .vscode
+NView*.txt
