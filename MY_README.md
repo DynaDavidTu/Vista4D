@@ -65,6 +65,18 @@ $ pip install "setuptools<70.0.0"
 
 ## Inference
 
+### Demo
+
 1. EXAMPLE=couple-newspaper RECON_METHOD=pi3 bash scripts/preprocess/example_recon_and_seg_single.sh
-2. EXAMPLE=couple-newspaper RESOLUTION=384p bash scripts/preprocess/example_render_single.sh
-3. EXAMPLE=couple-newspaper RESOLUTION=384p bash scripts/inference/example_inference_single.sh
+2. EXAMPLE=couple-newspaper RESOLUTION=720p bash scripts/preprocess/example_render_single.sh
+3. EXAMPLE=couple-newspaper RESOLUTION=720p bash scripts/inference/example_inference_single.sh
+
+### personal video
+1. put the video under media/single
+2. modify shell script add the condition with video's name
+    - ex. room.mp4 -> add elif [ $EXAMPLE == room ]
+3. define new camera path after 4D reconstruction
+    1. bash cam_ui/startup.sh
+    2. open http://localhost:9999/
+    3. Folder path input results/single/{video_name}/recon_and_seg
+    4. edit and save (Saved to cam_ui/exported_cameras/)

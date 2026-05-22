@@ -77,7 +77,7 @@
   • 環境建議
     ◦ 建議使用 A100 (80GB VRAM)來跑第3步，diffusion model 偏大
     ◦ 雖然程式支援多GPU但，單GPU只少要有 50 GB 才夠放下完整 model
-    ◦ CUDA 12.8
+    ◦ 跑 720p 峰值會到 70 GB
 
   • 驗證前準備
     ◦ 需要 hugging face 帳號設定 access tokens 方便後續下載模型
@@ -94,3 +94,42 @@
     
     ◦ Vista4D inference (雲端上使用 A100 完成)
       $ EXAMPLE=couple-newspaper RESOLUTION=720p bash scripts/inference/example_inference_single.sh
+
+  • 個人影片驗證
+    ◦ 將影片放到 "media/single" 下
+
+    ◦ 修改 "example_recon_and_seg_single.sh" 加上額外選項
+      - 有動態物件可修改 SEG_KEYWORDS 讓 SAM3 挑出來，靜態的話可以隨意輸入無相關的
+      - 影片幀數太低需修改 num_frames 
+        ```
+        elif [ $EXAMPLE == {video_name} ]; then
+            SEG_KEYWORDS=("man")
+            ARGS="$ARGS --num_frames 10"
+        ```
+    ◦ 跑完 "example_recon_and_seg_single.sh" (4D reconstruction) 後 
+      - 啟動 GUI 編輯想要的相機路徑
+        $ bash cam_ui/startup.sh
+      - 使用編輯 GUI 前需要先安裝 nodejs 套件
+        $ conda install conda-forge::nodejs=25 
+      1. open http://localhost:9999/
+      2. 左側 "Folder path input" 輸入 "results/single/{video_name}/recon_and_seg" 存放 reconstruction 的位置
+      3. 編輯及儲存結果 (會存在 cam_ui/exported_cameras/)
+      4. 將 .npz 放到 "media/single"
+
+    ◦ 修改 example_render_single.sh 加上額外選項 
+      - NUM_FRAMES 和前面設置一樣
+        ```
+        elif [ $EXAMPLE == {video_name} ]; then
+            CAM_PATH="media/single/{.npz file}"
+            NUM_FRAMES=10
+        ```
+    
+    ◦ 修改 example_inference_single.sh 加上額外選項
+      - PROMPT 為描述該影片場景的句子
+      - NUM_FRAMES 在這需要為 mod 4 後餘 1 的整數 
+        - 因此範例 <10 之中最大的數為 9 (9%4 = 1)
+        ```
+        elif [ $EXAMPLE == {video_name} ]; then
+            PROMPT="{descript the scene}"
+            NUM_FRAMES=9
+        ```
