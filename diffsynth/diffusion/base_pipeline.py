@@ -338,6 +338,9 @@ class BasePipeline(torch.nn.Module):
             vram_config["computation_dtype"] = vram_config["computation_dtype"] or self.torch_dtype
             vram_config["computation_device"] = vram_config["computation_device"] or self.device
 
+            # ! change model to fp8
+            vram_config["computation_dtype"] = torch.float8_e4m3fn
+            vram_config["computation_device"] = 'cuda'
 
             if torch.cuda.is_available():
                 local_rank = int(os.environ.get("LOCAL_RANK", "0"))

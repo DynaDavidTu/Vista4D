@@ -1,6 +1,7 @@
 EXAMPLE=${EXAMPLE:-couple-newspaper}  # We provide some examples to demo Vista4D!
 RESOLUTION=${RESOLUTION:-720p}  # 384p, 720p
 USE_USP=${USE_USP:-false}
+USE_TILE=${USE_TILE:-false}
 NUM_GPUS=${NUM_GPUS:-8}
 TRIAL_INFERENCE_TIME=${TRIAL_INFERENCE_TIME:-false}
 
@@ -10,6 +11,7 @@ echo "    RESOLUTION=$RESOLUTION"
 echo "    USE_USP=$USE_USP"
 echo "    NUM_GPUS=$NUM_GPUS"
 echo "    TRIAL_INFERENCE_TIME=$TRIAL_INFERENCE_TIME"
+echo "    USE_TILE=$USE_TILE"
 
 LOCAL_WAN_FOLDER=./checkpoints/wan
 WAN_NAME=Wan2.1-T2V-14B
@@ -64,6 +66,10 @@ else
 fi
 if [ $TRIAL_INFERENCE_TIME == true ]; then
     ARGS="$ARGS --num_inference_time_trials 3"
+fi
+
+if [ $USE_TILE == true ]; then
+    ARGS="$ARGS --tile_vae"
 fi
 
 $RUN -m scripts.inference.inference \
