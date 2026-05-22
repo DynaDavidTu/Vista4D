@@ -14,6 +14,7 @@ from diffsynth.utils.vista4d.media import crop_and_resize_pil
 
 from utils.media import load_cameras, load_masks, load_video, np_to_pil, pil_to_np, save_mp4_with_gif
 
+torch.backends.cudnn.enabled = False
 
 def get_pipeline(args, vista4d_config: Dict[str, Any]):
     model_id_with_origin_paths = args.model_id_with_origin_paths.split(",")
