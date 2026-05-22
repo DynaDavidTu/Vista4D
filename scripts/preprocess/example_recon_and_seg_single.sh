@@ -21,7 +21,7 @@ elif [ $EXAMPLE == snowboard ]; then
     SEG_KEYWORDS=("person" "helmet" "goggles" "snow suit" "snowboard")
 elif [ $EXAMPLE == soapbox ]; then
     SEG_KEYWORDS=("person" "helmet" "blue cart" "blue trolley" "wheel" "barrel")
-elif [ $EXAMPLE == room ]; then
+elif [[ $EXAMPLE == room || $EXAMPLE == room_1 ]]; then
     SEG_KEYWORDS=("man")
     ARGS="$ARGS --num_frames 10"
 else

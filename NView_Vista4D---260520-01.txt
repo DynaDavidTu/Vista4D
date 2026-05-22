@@ -90,7 +90,7 @@
       $ EXAMPLE=couple-newspaper RECON_METHOD=pi3 bash scripts/preprocess/example_recon_and_seg_single.sh
 
       2. Point cloud rendering
-      $ EXAMPLE=couple-newspaper RESOLUTION=384p bash scripts/preprocess/example_render_single.sh
+      $ EXAMPLE=couple-newspaper RESOLUTION=720p bash scripts/preprocess/example_render_single.sh
     
     ◦ Vista4D inference (雲端上使用 A100 完成)
-      $ EXAMPLE=couple-newspaper RESOLUTION=384p bash scripts/inference/example_inference_single.sh
+      $ EXAMPLE=couple-newspaper RESOLUTION=720p bash scripts/inference/example_inference_single.sh

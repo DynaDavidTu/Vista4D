@@ -27,8 +27,8 @@ elif [ $EXAMPLE == snowboard ]; then
     CAM_PATH=./media/single/snowboard_back-follow.npz
 elif [ $EXAMPLE == soapbox ]; then
     CAM_PATH=./media/single/soapbox_crane-above-right.npz
-elif [ $EXAMPLE == room ]; then
-    CAM_PATH=./results/single/room/recon_and_seg/cameras.npz
+elif [[ $EXAMPLE == room || $EXAMPLE == room_1 ]]; then
+    CAM_PATH="./results/single/$EXAMPLE/recon_and_seg/cameras.npz"
     NUM_FRAMES=10
 else
     echo "Unrecognized EXAMPLE=$EXAMPLE, exiting script."
