@@ -29,7 +29,7 @@ elif [ $EXAMPLE == soapbox ]; then
     CAM_PATH=./media/single/soapbox_crane-above-right.npz
 elif [ $EXAMPLE == room ]; then
     CAM_PATH=./results/single/room/recon_and_seg/cameras.npz
-    NUM_FRAMES=8
+    NUM_FRAMES=10
 else
     echo "Unrecognized EXAMPLE=$EXAMPLE, exiting script."
     exit 1

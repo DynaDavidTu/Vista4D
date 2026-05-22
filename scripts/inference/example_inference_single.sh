@@ -54,6 +54,7 @@ elif [ $EXAMPLE == soapbox ]; then
     PROMPT="A video of a man pushing a sky blue homemade cart with a man wearing a helmet and sitting on top of it and a red barrel at the front of the cart. The man runs with and pushes the cart on top of a wooden soapbox with ramps on either side. The scene takes place in the middle of a street with houses and spectators around, during a half-cloudly half-sunny day."
 elif [ $EXAMPLE == room ]; then
     PROMPT="A video of a modern workspace is arranged with tiled floors and large windows that flood the room with natural light. At the center, a table holds cameras, a helmet, cables, a bottle, and a sign with Japanese text, suggesting preparation for a demonstration or collaborative project. The surrounding area features neatly placed chairs and tables, a rack filled with magazines, and a large monitor on a stand, reinforcing the professional atmosphere. Over time, the scene reflects an organized and purposeful environment, where technology and teamwork converge in a clean, contemporary setting."
+    NUM_FRAMES=10
 else
     echo "Unrecognized EXAMPLE=$EXAMPLE, exiting script."
     exit 1

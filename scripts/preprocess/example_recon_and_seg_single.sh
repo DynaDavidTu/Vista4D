@@ -23,7 +23,7 @@ elif [ $EXAMPLE == soapbox ]; then
     SEG_KEYWORDS=("person" "helmet" "blue cart" "blue trolley" "wheel" "barrel")
 elif [ $EXAMPLE == room ]; then
     SEG_KEYWORDS=("man")
-    ARGS="$ARGS --num_frames 8"
+    ARGS="$ARGS --num_frames 10"
 else
     echo "Unrecognized EXAMPLE=$EXAMPLE, exiting script."
     exit 1
