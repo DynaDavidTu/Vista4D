@@ -122,34 +122,44 @@ def main(args):
     with open(args.vista4d_config_path, "r") as file:
         vista4d_config = yaml.safe_load(file)
 
-    inputs, fps = get_inputs(args, vista4d_config)
     pipe = get_pipeline(args, vista4d_config)  # Also initializes USP
 
-    if args.num_inference_time_trials is not None:
-        print(f"Running inference time trials n={args.num_inference_time_trials} times, not saving outputs.")
-        for i in range(args.num_inference_time_trials):
-            t = time()
-            pipe(**inputs, seed=args.seed, cfg_merge=args.cfg_merge, tiled=args.tile_vae)
-            print(f"Inference wall time (trial={i}): {time() - t}s")
-        return
+    while True:
 
-    if args.use_usp:
-        import torch.distributed as dist
+        example = input("Enter the name of scene (Ex. room) or enter \"q\", \"quit\" to end process : ").strip()
+        if example in ["q", "quit"]:
+            break
+        # ! hard coding 720p 
+        res = "720p"
+        args.input_folder = f"./results/single/{example}/render_{res}"
+        args.output_folder = f"./results/single/{example}/vista4d_{res}"
+        inputs, fps = get_inputs(args, vista4d_config)
 
-    def save_video_fn(save_path, video, quality=9):
-        if args.use_usp and dist.get_rank() != 0:  # Only save videos with rank 0
+        if args.num_inference_time_trials is not None:
+            print(f"Running inference time trials n={args.num_inference_time_trials} times, not saving outputs.")
+            for i in range(args.num_inference_time_trials):
+                t = time()
+                pipe(**inputs, seed=args.seed, cfg_merge=args.cfg_merge, tiled=args.tile_vae)
+                print(f"Inference wall time (trial={i}): {time() - t}s")
             return
-        save_mp4_with_gif(save_path, video, fps=fps, quality=quality, gif_folder="gifs" if args.save_gif else None)
 
-    source_video, point_cloud_video, point_cloud_masks = get_input_videos_for_vis(inputs)
-    save_video_fn(path.join(args.output_folder, "source"), source_video)
-    save_video_fn(path.join(args.output_folder, "point_cloud"), point_cloud_video)
-    save_video_fn(path.join(args.output_folder, "point_cloud_masks"), point_cloud_masks)
+        if args.use_usp:
+            import torch.distributed as dist
 
-    videos = pipe(**inputs, seed=args.seed, cfg_merge=args.cfg_merge, tiled=args.tile_vae)
-    for video, seed in zip(videos, args.seed):
-        video = np.stack([np.array(frame) for frame in video], axis=0)
-        save_video_fn(path.join(args.output_folder, f"video_seed={seed}"), video)
+        def save_video_fn(save_path, video, quality=9):
+            if args.use_usp and dist.get_rank() != 0:  # Only save videos with rank 0
+                return
+            save_mp4_with_gif(save_path, video, fps=fps, quality=quality, gif_folder="gifs" if args.save_gif else None)
+
+        source_video, point_cloud_video, point_cloud_masks = get_input_videos_for_vis(inputs)
+        save_video_fn(path.join(args.output_folder, "source"), source_video)
+        save_video_fn(path.join(args.output_folder, "point_cloud"), point_cloud_video)
+        save_video_fn(path.join(args.output_folder, "point_cloud_masks"), point_cloud_masks)
+
+        videos = pipe(**inputs, seed=args.seed, cfg_merge=args.cfg_merge, tiled=args.tile_vae)
+        for video, seed in zip(videos, args.seed):
+            video = np.stack([np.array(frame) for frame in video], axis=0)
+            save_video_fn(path.join(args.output_folder, f"video_seed={seed}"), video)
 
 
 if __name__ == "__main__":
